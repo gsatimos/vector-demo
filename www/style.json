@@ -1,0 +1,99 @@
+{
+    "version": 8,
+    "name": "bathymetric",
+    "metadata": {
+        "mapbox:autocomposite": false,
+        "mapbox:type": "template"
+    },
+    "center": [
+        96.65138418188951,
+        -5.792279611633944
+    ],
+    "zoom": 2.08048410054227,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "continent": {
+            "url": "http://localhost:3333/data/continent.json",
+            "type": "vector"
+        },
+        "aust_outline": {
+            "url": "http://localhost:1111/data/cstauscd_r.json",
+            "type": "vector"
+        },
+        "mapbox://gsat38.world_bathy": {
+            "url": "mapbox://gsat38.world_bathy",
+            "type": "raster",
+            "tileSize": 256
+        },
+        "mapbox://gsat38.aus_bathy": {
+            "url": "mapbox://gsat38.aus_bathy",
+            "type": "raster",
+            "tileSize": 256
+        }
+    },
+    "sprite": "mapbox://sprites/gsat38/cjeq54t8i6dbo2rn5hi6cvoo1",
+    "glyphs": "mapbox://fonts/gsat38/{fontstack}/{range}.pbf",
+    "layers": [
+        {
+            "id": "background",
+            "type": "background",
+            "layout": {},
+            "paint": {
+                "background-color": "hsl(215, 78%, 64%)"
+            }
+        },
+        {
+            "id": "gsat38-world-bathy",
+            "type": "raster",
+            "source": "mapbox://gsat38.world_bathy",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {}
+        },
+        {
+            "id": "gsat38-aus-bathy",
+            "type": "raster",
+            "metadata": {},
+            "source": "mapbox://gsat38.aus_bathy",
+            "minzoom": 5,
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {}
+        },
+        {
+            "id": "continent",
+            "type": "fill",
+            "source": "continent",
+            "source-layer": "continent",
+            "minzoom": 1,
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "fill-color": "hsl(0, 0%, 100%)"
+            }
+        },
+        {
+            "id": "cstauscd-r",
+            "type": "fill",
+            "source": "aust_outline",
+            "source-layer": "cstauscd_r",
+            "minzoom": 1,
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "fill-color": "hsl(0, 0%, 100%)"
+            }
+        }
+    ],
+    "created": "2018-03-13T21:00:14.296Z",
+    "id": "cjeq54t8i6dbo2rn5hi6cvoo1",
+    "modified": "2018-03-14T21:05:59.691Z",
+    "owner": "gsat38",
+    "visibility": "private",
+    "draft": false
+}

@@ -1,0 +1,30 @@
+<html>
+
+<head>
+    <title>OpenLayers2</title>
+    <script type="text/javascript" src="./openLayers/OpenLayers.js" ></script>
+    <link rel="stylesheet" href="./openLayers/theme/default/style.css" type="text/css" />
+
+</head>
+
+<body>
+    <div id="map" class="map"></div>
+    <script>
+        var myLayer = new OpenLayers.Layer.XYZ(
+            'My Map Layer',
+            ['https://api.mapbox.com/styles/v1/gsat38/cjeq54t8i6dbo2rn5hi6cvoo1/tiles/256/${z}/${x}/${y}?access_token=pk.eyJ1IjoiZ3NhdDM4IiwiYSI6ImNqZWdqdTg4ZDF2ZW8yeG1rNnNtaGYxZDUifQ.i42n4bVGXhBfc-V5KRJHuA'],
+            {
+                sphericalMercator: true,
+                wrapDateLine: true
+            }
+        );
+        var map = new OpenLayers.Map({
+            div: 'map',
+            layers: [myLayer],
+            center: [0, 0],
+            zoom: 1
+        });
+    </script>
+</body>
+
+</html>
