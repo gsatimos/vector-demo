@@ -13,12 +13,12 @@
     "bearing": 0,
     "pitch": 0,
     "sources": {
-        "continent": {
-            "url": "http://localhost:3333/data/continent.json",
+        "mapbox://gsat38.world_outline": {
+            "url": "mapbox://gsat38.world_outline",
             "type": "vector"
         },
-        "aust_outline": {
-            "url": "http://localhost:1111/data/cstauscd_r.json",
+        "mapbox://gsat38.aust_outline": {
+            "url": "mapbox://gsat38.aust_outline",
             "type": "vector"
         },
         "mapbox://gsat38.world_bathy": {
@@ -66,7 +66,7 @@
         {
             "id": "continent",
             "type": "fill",
-            "source": "continent",
+            "source": "mapbox://gsat38.world_outline",
             "source-layer": "continent",
             "minzoom": 1,
             "layout": {
@@ -79,7 +79,7 @@
         {
             "id": "cstauscd-r",
             "type": "fill",
-            "source": "aust_outline",
+            "source": "mapbox://gsat38.aust_outline",
             "source-layer": "cstauscd_r",
             "minzoom": 1,
             "layout": {

@@ -1,0 +1,69 @@
+{
+    "version": 8,
+    "name": "bathymetric-simple",
+    "metadata": {
+        "mapbox:autocomposite": false,
+        "mapbox:type": "template"
+    },
+    "center": [
+        136.96658996133215,
+        -13.594252462264336
+    ],
+    "zoom": 2.5401023790691553,
+    "bearing": 0.014123288837026847,
+    "pitch": 0,
+    "sources": {
+        "mapbox://gsat38.world_outline": {
+            "url": "mapbox://gsat38.world_outline",
+            "type": "vector"
+        },
+        "mapbox://gsat38.aust_outline": {
+            "url": "mapbox://gsat38.aust_outline",
+            "type": "vector"
+        }
+    },
+    "sprite": "mapbox://sprites/gsat38/cjetg1u8q205z2rtbrf240p9n",
+    "glyphs": "mapbox://fonts/gsat38/{fontstack}/{range}.pbf",
+    "layers": [
+        {
+            "id": "background",
+            "type": "background",
+            "layout": {},
+            "paint": {
+                "background-color": "hsl(215, 74%, 54%)"
+            }
+        },
+        {
+            "id": "continent",
+            "type": "fill",
+            "source": "mapbox://gsat38.world_outline",
+            "source-layer": "continent",
+            "minzoom": 1,
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "fill-color": "hsl(0, 0%, 100%)"
+            }
+        },
+        {
+            "id": "cstauscd-r",
+            "type": "fill",
+            "source": "mapbox://gsat38.aust_outline",
+            "source-layer": "cstauscd_r",
+            "minzoom": 1,
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "fill-color": "hsl(0, 0%, 100%)"
+            }
+        }
+    ],
+    "created": "2018-03-16T04:29:09.483Z",
+    "id": "cjetg1u8q205z2rtbrf240p9n",
+    "modified": "2018-03-16T04:33:45.966Z",
+    "owner": "gsat38",
+    "visibility": "private",
+    "draft": false
+}
