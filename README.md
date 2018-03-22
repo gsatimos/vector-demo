@@ -1,88 +1,74 @@
-## Work In Progress (workflow and instructions are incomplete)
+## vector-demo
 
-### Install tools
-###### tippercanoe 
-https://github.com/mapbox/tippecanoe
-###### ogr2ogr
-###### docker
-###### libtiff (maybe)
-http://www.linuxfromscratch.org/blfs/view/7.10-systemd/general/libtiff.html
+This illustrates the workflow to serve tilesets based on the raw assets that are used by geoserver for the default_bathymetry layer. This is essentially:
+- convert shapefiles (Australia, and world continents outlines) to GeoJSON
+- convert Tifs to GeoTif (world bathymetry image and Australian-region bathymetry image)
+- convert GeoJSON and GeoTifs to `mbtile` tileset files (sqlite)
+- serve tilesets using docker
+- point JS mapping APIs to a pre-prepared `style` which points to the tilesets being served
 
-###### gdal2mbtiles
-https://github.com/ecometrica/gdal2mbtiles
-May require additional ubuntu packages as listed on github plus `sudo apt install gdal-bin python3-gdal` 
-You also might need to run this with Python3 e.g. in a python 3 virtualenv
+### Requirements
+- Docker
 
+#### Note on resources
 
-#### note on resources
+Resources in `./resources` directory are as per the raw files rendered by geoserver-static. However...I couldn't find supporting _.shx_ and _.dbf_ files for the world continents shape file layer so for the puposes of this demo I've sourced a continent shape file from elsewhere then manually removed Australia.
 
-Resources in `./resources` directory are as per geoserver-static. However...I couldn't find supporting _.shx_ and _.dbf_ files for the world continents shape file layer so for the puposes of this demo I've sourced a continent shape file from elsewhere.
+#### Build and run Vectoriser
 
-### Convert shape files to geojson 
+The Vectoriser is an docker container that has several GIS tools installed
+
+Build the Vectoriser image
 ```
-cd resources
-ogr2ogr -f GeoJSON ./prepped/cstauscd_r.geojson -t_srs EPSG:4326 -s_srs EPSG:4326 cstauscd_r.shp 
-ogr2ogr -f GeoJSON ./prepped/continent.geojson -t_srs EPSG:4326 -s_srs EPSG:4326 continent.shp
-cd ../
-```
-### Convert tif files to RGBA 
-
-(TODO - this isn't working atm)
-tiff2rgba -c none resources/prepped/bathcl500md_coloured.tif resources/prepped/bathcl500md_coloured_rgba.tif
-
-
-### Add georeferencing to tif files
-
-The tif files need to have embedded georeferencing i.e. the coordinates corresponding to the 4 corners of the image need to be included in the tif itself (thus making it a 'geotif').
-
-Please note that the coordinates below are approximate. For production use, these would need to be verified.
-
-World bathymetry
-```
-gdal_translate -a_nodata 0 -of GTiff -a_srs EPSG:4326 \
-  -a_ullr -180.00 90.00 180.00 -90.00 \
-  resources/worldmap_large_default.tif \
-  resources/prepped/worldmap_large_default.tif
+#from project root dir
+docker build -t vectoriser ./docker/Vectoriser
 ```
 
-Australia region bathymetry
+Run the Vectoriser container (takes a few minutes)
 ```
-gdal_translate -a_nodata 0 -of GTiff -a_srs EPSG:4326 \
-  -a_ullr 102.00 -8.00 172.00 -52.00 \
-  resources/prepped/bathcl500md_coloured.tif \
-  resources/prepped/bathcl500md_coloured_geo.tif
-mv resources/prepped/bathcl500md_coloured_geo.tif resources/prepped/bathcl500md_coloured.tif
+#from project root dir 
+docker run -v "$(pwd):/data" -i -t vectoriser ./create_tilesets.sh
 ```
+This will output .mbtileset files to the local ./tilesets directory
 
-### Create mbiles from geojson
+#### Serve tilesets
 
-You can change the zoom levels but be careful - bigger zooms increase the tippecanoe processing time
-```
-# -Z = minZoom
-# -z = maxZoom 
-tippecanoe -o tilesets/cstauscd_r.mbtiles -Z 0 -z 10 resources/prepped/cstauscd_r.geojson
-tippecanoe -o tilesets/continent.mbtiles -Z 0 -z 10 resources/prepped/continent.geojson
-```
-### Create mbtiles from tifs
-```
-gdal2mbt resources/prepped/bathcl500md_coloured.tif -z 0-11 -w none -o xyz tilesets/bathcl500md_coloured.mbtiles
-```
+Run `docker-compose up` in the project root dir. This will start up 4 containers each serving a different .mbtileset 
 
-### serve tilesets 
+#### run web demo
 
-Run from separate terminals
-```
-docker run -it -v $(pwd):/data -p 1111:80 klokantech/tileserver-gl tilesets/cstauscd_r.mbtiles
-docker run -it -v $(pwd):/data -p 3333:80 klokantech/tileserver-gl tilesets/continent.mbtiles
-```
-
-Note that links in www/style.json reference these endpoints so if you need to choose different ports then update www/style.json
-
-You should now be able to browse to http://localhost:1111 and http://localhost:3333 and click 'inspect' to see the tilesets in action
-
-### run demo
+Serve the `www` directory e.g. using Python in another terminal
 ```
 cd www
 python -m SimpleHTTPServer
 ```
+
 Browse to localhost:8000
+
+#### Note on vector support in JS Mapping APIs
+An examination of what different mapping apis are capable of doing with vector layers is still to be completed. For demo purposes however, you will see that
+- Mapbox works very well
+- OpenLayers (versions 2 and 4) both load tiles as rasters
+
+#### Next Steps
+- Implement a workflow for exporting .mbtileset -> disk. Once objects are on disk and are servable via HTTP, then logically, they can be served from an S3 bucket.
+- Explore more JS options
+
+#### Understand 
+
+Some Mapbox tools are used to produce this demo. While Mapbox.com is a subscription-based service (actually the free-tier is great), most of their suite of tools/specifications are open source https://www.mapbox.com/about/open/
+
+Styles
+- The style documents in `www/styles` conform to the [Mapbox Style Specification](https://www.mapbox.com/mapbox-gl-js/style-spec/)
+- These were drafted using Mapbox Studio but can be easily produced/edited manually
+
+MBTiles
+- The files output by the Vectoriser container are SQLite files.
+
+_TODO_ can always add more info about how it all works but let me know if there's anything that I can elaborate on.
+
+
+
+
+
+

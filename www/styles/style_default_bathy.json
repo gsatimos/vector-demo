@@ -6,34 +6,32 @@
         "mapbox:type": "template"
     },
     "center": [
-        96.65138418188951,
-        -5.792279611633944
+        135.00,
+        -23.00
     ],
-    "zoom": 2.08048410054227,
+    "zoom": 3,
     "bearing": 0,
     "pitch": 0,
     "sources": {
-        "mapbox://gsat38.world_outline": {
-            "url": "mapbox://gsat38.world_outline",
-            "type": "vector"
-        },
-        "mapbox://gsat38.aust_outline": {
-            "url": "mapbox://gsat38.aust_outline",
-            "type": "vector"
-        },
-        "mapbox://gsat38.world_bathy": {
-            "url": "mapbox://gsat38.world_bathy",
+        "bathcl500md_coloured": {
+            "url": "http://localhost:8111/data/bathcl500md_coloured.json",
             "type": "raster",
             "tileSize": 256
         },
-        "mapbox://gsat38.aus_bathy": {
-            "url": "mapbox://gsat38.aus_bathy",
+        "worldmap_large_default": {
+            "url": "http://localhost:8112/data/worldmap_large_default.json",
             "type": "raster",
             "tileSize": 256
+        },
+        "continent": {
+            "url": "http://localhost:8113/data/continent.json",
+            "type": "vector"
+        },
+        "cstauscd_r": {
+            "url": "http://localhost:8114/data/cstauscd_r.json",
+            "type": "vector"
         }
     },
-    "sprite": "mapbox://sprites/gsat38/cjeq54t8i6dbo2rn5hi6cvoo1",
-    "glyphs": "mapbox://fonts/gsat38/{fontstack}/{range}.pbf",
     "layers": [
         {
             "id": "background",
@@ -44,19 +42,19 @@
             }
         },
         {
-            "id": "gsat38-world-bathy",
+            "id": "worldmap_large_default",
             "type": "raster",
-            "source": "mapbox://gsat38.world_bathy",
+            "source": "worldmap_large_default",
             "layout": {
                 "visibility": "visible"
             },
             "paint": {}
         },
         {
-            "id": "gsat38-aus-bathy",
+            "id": "bathcl500md_coloured",
             "type": "raster",
             "metadata": {},
-            "source": "mapbox://gsat38.aus_bathy",
+            "source": "bathcl500md_coloured",
             "minzoom": 5,
             "layout": {
                 "visibility": "visible"
@@ -66,7 +64,7 @@
         {
             "id": "continent",
             "type": "fill",
-            "source": "mapbox://gsat38.world_outline",
+            "source": "continent",
             "source-layer": "continent",
             "minzoom": 1,
             "layout": {
@@ -79,7 +77,7 @@
         {
             "id": "cstauscd-r",
             "type": "fill",
-            "source": "mapbox://gsat38.aust_outline",
+            "source": "cstauscd_r",
             "source-layer": "cstauscd_r",
             "minzoom": 1,
             "layout": {
@@ -93,7 +91,7 @@
     "created": "2018-03-13T21:00:14.296Z",
     "id": "cjeq54t8i6dbo2rn5hi6cvoo1",
     "modified": "2018-03-14T21:05:59.691Z",
-    "owner": "gsat38",
-    "visibility": "private",
+    "owner": "gsatimos",
+    "visibility": "public",
     "draft": false
 }

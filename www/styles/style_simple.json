@@ -6,37 +6,35 @@
         "mapbox:type": "template"
     },
     "center": [
-        136.96658996133215,
-        -13.594252462264336
+        135.00,
+        -23.00
     ],
-    "zoom": 2.5401023790691553,
+    "zoom": 3,
     "bearing": 0.014123288837026847,
     "pitch": 0,
     "sources": {
-        "mapbox://gsat38.world_outline": {
-            "url": "mapbox://gsat38.world_outline",
+        "continent": {
+            "url": "http://localhost:8113/data/continent.json",
             "type": "vector"
         },
-        "mapbox://gsat38.aust_outline": {
-            "url": "mapbox://gsat38.aust_outline",
+        "cstauscd_r": {
+            "url": "http://localhost:8114/data/cstauscd_r.json",
             "type": "vector"
         }
     },
-    "sprite": "mapbox://sprites/gsat38/cjetg1u8q205z2rtbrf240p9n",
-    "glyphs": "mapbox://fonts/gsat38/{fontstack}/{range}.pbf",
     "layers": [
         {
             "id": "background",
             "type": "background",
             "layout": {},
             "paint": {
-                "background-color": "hsl(215, 74%, 54%)"
+                "background-color": "hsl(215, 78%, 64%)"
             }
         },
         {
             "id": "continent",
             "type": "fill",
-            "source": "mapbox://gsat38.world_outline",
+            "source": "continent",
             "source-layer": "continent",
             "minzoom": 1,
             "layout": {
@@ -49,7 +47,7 @@
         {
             "id": "cstauscd-r",
             "type": "fill",
-            "source": "mapbox://gsat38.aust_outline",
+            "source": "cstauscd_r",
             "source-layer": "cstauscd_r",
             "minzoom": 1,
             "layout": {
@@ -63,7 +61,7 @@
     "created": "2018-03-16T04:29:09.483Z",
     "id": "cjetg1u8q205z2rtbrf240p9n",
     "modified": "2018-03-16T04:33:45.966Z",
-    "owner": "gsat38",
-    "visibility": "private",
+    "owner": "gsatimos",
+    "visibility": "public",
     "draft": false
 }

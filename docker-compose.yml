@@ -1,0 +1,34 @@
+version: "3"
+services:
+  bathcl500md_coloured:
+    image: klokantech/tileserver-gl  
+    ports:
+      - "8111:80"
+    volumes:
+      - ./:/data
+    command: tilesets/bathcl500md_coloured.mbtiles
+  
+  worldmap_large_default:
+    image: klokantech/tileserver-gl  
+    ports:
+      - "8112:80"
+    volumes:
+      - ./:/data
+    command: tilesets/worldmap_large_default.mbtiles
+
+  continent:
+    image: klokantech/tileserver-gl  
+    ports:
+      - "8113:80"
+    volumes:
+      - ./:/data
+    command: tilesets/continent.mbtiles
+
+  cstauscd_r:
+    image: klokantech/tileserver-gl  
+    ports:
+      - "8114:80"
+    volumes:
+      - ./:/data
+    command: tilesets/cstauscd_r.mbtiles
+
